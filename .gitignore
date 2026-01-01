@@ -1,0 +1,31 @@
+
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# k6 reports (saved locally but maybe not committed if large, but user wants reports?)
+# User asked where reports are, implying they might want them. But usually binary/large reports are ignored.
+# JSON reports are small text files. I will KEEP them for now as proof of work.
+# But ignore temporary txt files if any remain.
+loadtest-k6/reports/*.txt
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,28 @@
+# Cursor & Antigravity Rules
+
+## 📝 Git Commit Convention (필수 준수)
+모든 커밋 메시지는 반드시 아래 형식을 따라야 합니다.
+
+**Format**:
+`<Emoji> <Type>: <English Title>`
+`<Korean Description>`
+
+**Emojis Mapping (Safe 3-byte Emojis ONLY):**
+- ⚙ (Gear) : `chore` (Build, Config, Init)
+- ⏳ (Hourglass) : `feat` (Blocking Application / MVC)
+- ⚡ (Zap) : `feat` (Non-blocking Application / WebFlux)
+- ✨ (Sparkles) : `feat` (Coroutines / New Features)
+- ⚒ (Hammer) : `infra`, `fix`, `refactor` (General Work)
+- ⚗ (Alembic) : `test` (Experiments, Load Tests)
+- 📝 (Memo) : `docs` (Documentation)
+
+**Rules:**
+1. **아이콘 필수**: Windows 환경 호환성을 위해 위 목록에 있는 **3-byte 이모지**만 사용한다. (다이아몬드 `?` 깨짐 방지)
+2. **영문 타이틀**: 제목은 예: `Initialize project structure` 처럼 영문으로 간결하게 작성한다.
+3. **한글 설명**: 본문은 한국어로 상세하게 작성한다.
+
+## 🛠️ Technology Stack
+- Spring Boot 3.2+
+- Java 21 / Kotlin
+- Docker / Docker Compose
+- k6 (Load Testing)

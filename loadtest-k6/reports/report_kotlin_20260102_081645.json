@@ -1,0 +1,141 @@
+{
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "status is 200": {
+                    "name": "status is 200",
+                    "path": "::status is 200",
+                    "id": "6210a8cd14cd70477eba5c5e4cb3fb5f",
+                    "passes": 27087,
+                    "fails": 0
+                },
+                "response has thread info": {
+                    "name": "response has thread info",
+                    "path": "::response has thread info",
+                    "id": "d9fdfad15c2d51abd9518ac3509edcc6",
+                    "passes": 27087,
+                    "fails": 0
+                }
+            }
+    },
+    "metrics": {
+        "http_req_duration": {
+            "avg": 203.05088375537963,
+            "min": 199.501104,
+            "med": 201.773761,
+            "max": 308.03683,
+            "p(90)": 206.28590880000002,
+            "p(95)": 210.759275,
+            "thresholds": {
+                "p(95)<1000": false,
+                "p(99)<2000": false
+            }
+        },
+        "http_req_connecting": {
+            "avg": 0.04177213803669663,
+            "min": 0,
+            "med": 0,
+            "max": 72.974234,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "vus_max": {
+            "value": 1000,
+            "min": 1000,
+            "max": 1000
+        },
+        "http_req_receiving": {
+            "avg": 0.06080834215675393,
+            "min": 0.010631,
+            "med": 0.051559,
+            "max": 25.603137,
+            "p(90)": 0.10590800000000002,
+            "p(95)": 0.1252507
+        },
+        "http_reqs": {
+            "rate": 380.39688023273516,
+            "count": 27087
+        },
+        "http_req_waiting": {
+            "avg": 202.96987504393147,
+            "min": 199.440388,
+            "med": 201.693287,
+            "max": 307.994078,
+            "p(90)": 206.206547,
+            "p(95)": 210.67422019999998
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 27087,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_req_tls_handshaking": {
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "iterations": {
+            "count": 27087,
+            "rate": 380.39688023273516
+        },
+        "vus": {
+            "min": 50,
+            "max": 998,
+            "value": 249
+        },
+        "http_req_blocked": {
+            "p(90)": 0.008005,
+            "p(95)": 0.020155999999999973,
+            "avg": 0.050130903385388184,
+            "min": 0.001533,
+            "med": 0.004559,
+            "max": 73.06569
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 203.05088375537963,
+            "min": 199.501104,
+            "med": 201.773761,
+            "max": 308.03683,
+            "p(90)": 206.28590880000002,
+            "p(95)": 210.759275
+        },
+        "data_received": {
+            "count": 9983777,
+            "rate": 140207.39187578307
+        },
+        "http_req_sending": {
+            "max": 37.503239,
+            "p(90)": 0.031164000000000015,
+            "p(95)": 0.04587969999999991,
+            "avg": 0.02020036929154205,
+            "min": 0.004729,
+            "med": 0.012043
+        },
+        "checks": {
+            "passes": 54174,
+            "fails": 0,
+            "value": 1
+        },
+        "data_sent": {
+            "count": 2898309,
+            "rate": 40702.46618490266
+        },
+        "iteration_duration": {
+            "p(95)": 1211.6459188000001,
+            "avg": 1203.7717727065346,
+            "min": 1201.011483,
+            "med": 1202.499994,
+            "max": 1308.388205,
+            "p(90)": 1207.1330401999999
+        }
+    }
+}

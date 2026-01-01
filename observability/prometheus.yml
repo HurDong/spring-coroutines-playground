@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 2s
+
+scrape_configs:
+  - job_name: 'app-mvc'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['app-mvc:8081']
+        labels:
+          application: 'app-mvc'
+
+  - job_name: 'app-webflux-java'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['app-webflux-java:8082']
+        labels:
+          application: 'app-webflux-java'
+
+  - job_name: 'app-webflux-kotlin'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['app-webflux-kotlin:8083']
+        labels:
+          application: 'app-webflux-kotlin'

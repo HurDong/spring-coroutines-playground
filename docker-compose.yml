@@ -13,6 +13,8 @@ services:
       - SERVER_PORT=8081
     networks:
       - playground-net
+    depends_on:
+      - postgres
 
   app-webflux-java:
     build: 
@@ -25,6 +27,8 @@ services:
       - SERVER_PORT=8082
     networks:
       - playground-net
+    depends_on:
+      - postgres
 
   app-webflux-kotlin:
     build: 
@@ -35,6 +39,20 @@ services:
       - "8083:8083"
     environment:
       - SERVER_PORT=8083
+    networks:
+      - playground-net
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=playground
     networks:
       - playground-net
 

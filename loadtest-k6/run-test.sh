@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Create reports directory
-cd "$(dirname "$0")"
-mkdir -p reports
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+# Default values
+VUS=${VUS:-50}
+DURATION=${DURATION:-10s}
+SCENARIO=${SCENARIO:-default} # default or comparison
 
-# Function to run k6
 # Function to run k6
 run_k6() {
     APP_NAME=$1
@@ -38,10 +37,15 @@ run_k6() {
     echo ""
 }
 
+# Create reports directory
+cd "$(dirname "$0")"
+mkdir -p reports
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
 # Check argument
 if [ -z "$1" ]; then
     echo "Usage: ./run-test.sh [target] [vus] [duration] [fanout]"
-    echo "Targets: mvc, java, kotlin, all"
+    echo "Targets: mvc, java, kotlin, all, compare"
     echo "Example: ./run-test.sh java 100 30s 50"
     exit 1
 fi
@@ -68,9 +72,34 @@ case "$TARGET" in
         sleep 5
         run_k6 "WebFlux (Kotlin)" 8083 "kotlin"
         ;;
+    compare)
+        echo "=================================================="
+        echo "🚀 Starting Comparison Test (Blocking vs Non-Blocking)"
+        echo "   Duration: 15s"
+        echo "=================================================="
+        
+        export MSYS_NO_PATHCONV=1
+        
+        # Default HOSTNAME to host.docker.internal for Windows compatibility
+        # Users can override it: HOSTNAME=localhost ./run-test.sh compare
+        TARGET_HOST=${HOSTNAME:-host.docker.internal}
+
+        echo "👉 Running Blocking Test (MVC)..."
+        docker run --rm -i --network host -v "$(pwd)/reports:/reports" grafana/k6 run \
+            -e TARGET_ENV=blocking \
+            -e HOSTNAME=$TARGET_HOST \
+            - < script-comparison.js
+            
+        echo ""
+        echo "👉 Running Non-Blocking Test (WebFlux)..."
+        docker run --rm -i --network host -v "$(pwd)/reports:/reports" grafana/k6 run \
+            -e TARGET_ENV=non-blocking \
+            -e HOSTNAME=$TARGET_HOST \
+            - < script-comparison.js
+        ;;
     *)
         echo "Unknown target: $TARGET"
-        echo "Available targets: mvc, java, kotlin, all"
+        echo "Available targets: mvc, java, kotlin, all, compare"
         exit 1
         ;;
 esac

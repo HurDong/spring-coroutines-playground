@@ -1,0 +1,5 @@
+# Cursor Rules (Always Apply)
+
+## Project Rules
+- **Git Conventions**: Before making any git commits, YOU MUST READ AND FOLLOW `.cursor/rules/git_convention.mdc`.
+- **Reference**: Always check `.cursor/rules/` for specific conventions.

@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # Create reports directory
+cd "$(dirname "$0")"
 mkdir -p reports
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
+# Function to run k6
 # Function to run k6
 run_k6() {
     APP_NAME=$1
@@ -15,6 +17,7 @@ run_k6() {
     
     echo "=================================================="
     echo "🚀 Starting Load Test for $APP_NAME (Port $PORT)"
+    echo "   VUs: $VUS, Duration: $DURATION"
     echo "=================================================="
     
     # Run k6 with volume mount for reports and enable summary export
@@ -23,7 +26,12 @@ run_k6() {
     
     docker run --rm -i --network host -v "$(pwd)/reports:/reports" grafana/k6 run \
         --summary-export "/reports/$JSON_FILENAME" \
-        -e PORT=$PORT - < script.js
+        -e PORT=$PORT \
+        -e VUS=$VUS \
+        -e DURATION=$DURATION \
+        -e TARGET_VUS=$VUS \
+        -e FANOUT=$FANOUT \
+        - < script.js
         
     echo "✅ Test finished for $APP_NAME"
     echo "💾 JSON Report saved: reports/$JSON_FILENAME"
@@ -32,11 +40,18 @@ run_k6() {
 
 # Check argument
 if [ -z "$1" ]; then
-    echo "Usage: ./run-test.sh [mvc|java|kotlin|all]"
+    echo "Usage: ./run-test.sh [target] [vus] [duration] [fanout]"
+    echo "Targets: mvc, java, kotlin, all"
+    echo "Example: ./run-test.sh java 100 30s 50"
     exit 1
 fi
 
-case "$1" in
+TARGET=$1
+VUS=${2:-50}        # Default 50 VUs
+DURATION=${3:-10s}  # Default 10s
+FANOUT=${4:-3}      # Default Fanout 3
+
+case "$TARGET" in
     mvc)
         run_k6 "MVC (Blocking)" 8081 "mvc"
         ;;
@@ -54,7 +69,7 @@ case "$1" in
         run_k6 "WebFlux (Kotlin)" 8083 "kotlin"
         ;;
     *)
-        echo "Unknown target: $1"
+        echo "Unknown target: $TARGET"
         echo "Available targets: mvc, java, kotlin, all"
         exit 1
         ;;

@@ -1,0 +1,11 @@
+---
+description: Technology Stack and Project Constraints
+globs: 
+---
+
+# 🛠️ Technology Stack
+
+- **Framework**: Spring Boot 3.2+
+- **Language**: Java 21 / Kotlin
+- **Infrastructure**: Docker / Docker Compose
+- **Testing**: k6 (Load Testing)

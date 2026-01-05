@@ -20,11 +20,8 @@ logs/
 # Docker
 docker-compose.override.yml
 
-# k6 reports (saved locally but maybe not committed if large, but user wants reports?)
-# User asked where reports are, implying they might want them. But usually binary/large reports are ignored.
-# JSON reports are small text files. I will KEEP them for now as proof of work.
-# But ignore temporary txt files if any remain.
-loadtest-k6/reports/*.txt
+# k6 reports
+loadtest-k6/reports/
 
 # OS
 .DS_Store

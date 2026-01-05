@@ -1,0 +1,39 @@
+---
+description: Git Commit Convention to be followed for all commits
+globs: 
+---
+
+# 📝 Git Commit Convention (필수 준수)
+
+모든 커밋 메시지는 반드시 아래 형식을 따라야 합니다.
+
+## **Format**
+```
+<Emoji> <Type>: <English Title>
+<Korean Description>
+```
+
+## **Emojis Mapping (Safe 3-byte Emojis ONLY)**
+| Emoji | Code | Type | Description |
+| :--- | :--- | :--- | :--- |
+| ⚙ | `:gear:` | `chore` | Build, Config, Init |
+| ⏳ | `:hourglass_flowing_sand:` | `feat` | Blocking Application / MVC |
+| ⚡ | `:zap:` | `feat` | Non-blocking Application / WebFlux |
+| ✨ | `:sparkles:` | `feat` | Coroutines / New Features |
+| ⚒ | `:hammer_and_pick:` | `infra`, `fix`, `refactor` | General Work |
+| ⚗ | `:alembic:` | `test` | Experiments, Load Tests |
+| 📝 | `:memo:` | `docs` | Documentation |
+
+## **Rules**
+1. **아이콘 필수**: Windows 환경 호환성을 위해 위 목록에 있는 **3-byte 이모지**만 사용한다. (다이아몬드 `?` 깨짐 방지)
+2. **영문 타이틀**: 제목은 예: `Initialize project structure` 처럼 영문으로 간결하게 작성한다.
+3. **한글 설명**: 본문은 한국어로 상세하게 작성한다.
+
+## **Example**
+```text
+✨ feat: Implement User Authentication
+
+사용자 로그인 및 회원가입 기능을 구현했습니다.
+- JWT 토큰 발급 로직 추가
+- Security Configuration 설정
+```

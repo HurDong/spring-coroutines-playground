@@ -6,20 +6,20 @@
 
 외부 API 서버를 따로 띄우지 않고, **하나의 앱 안에서 모의(Simulation)** 하기 위해 2개의 컨트롤러를 만들었습니다.
 
-### 1. `AggregateController` (주인공)
-*   **역할**: 우리가 테스트하는 **진짜 서버**입니다.
+### 1. `AggregateController` (Target Service)
+*   **역할**: 부하 테스트의 대상이 되는 **핵심 서비스**입니다.
 *   **하는 일**: 사용자 요청을 받으면, `DownstreamController`를 3번 호출하고 결과를 모아서 응답합니다.
 *   **부하 테스트 대상**: k6는 이곳(`8080/api/aggregate`)을 공격합니다.
 
-### 2. `DownstreamController` (조연)
-*   **역할**: 외부 API (Google, Naver, DB 등)를 **흉내내는 가짜 서버**입니다.
+### 2. `DownstreamController` (Mock Service)
+*   **역할**: 외부 API (Google, Naver, DB 등)의 동작을 시뮬레이션하는 **가상 서비스**입니다.
 *   **하는 일**: 아무 일도 안 하고 **200ms 동안 잠만 잡니다** (Delay Simulation).
 *   **이유**: 네트워크 I/O 지연 시간을 강제로 만들기 위함입니다.
 
 ```mermaid
 graph LR
-    User[사용자 (k6)] -->|요청| Aggregate[Aggregate Controller]
-    Aggregate -->|호출 1| Downstream[Downstream Controller (200ms 지연)]
+    User["사용자 (k6)"] -->|요청| Aggregate["Aggregate Controller"]
+    Aggregate -->|호출 1| Downstream["Downstream Controller (200ms 지연)"]
     Aggregate -->|호출 2| Downstream
     Aggregate -->|호출 3| Downstream
 ```

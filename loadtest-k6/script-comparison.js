@@ -6,11 +6,11 @@ const HOSTNAME = __ENV.HOSTNAME || 'localhost';
 
 const CONFIG = {
     blocking: {
-        url: `http://${HOSTNAME}:8081/api/v1/blocking-db`,
+        url: `http://${HOSTNAME}:8081/api/v1/simulate-delay`,
         vus: 300, 
     },
     'non-blocking': {
-        url: `http://${HOSTNAME}:8082/api/v1/non-blocking-db`,
+        url: `http://${HOSTNAME}:8082/api/v1/simulate-delay`,
         vus: 1000, 
     }
 };

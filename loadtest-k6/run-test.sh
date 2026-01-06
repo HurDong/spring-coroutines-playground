@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get the directory where the script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 # Default values
 VUS=${VUS:-50}
 DURATION=${DURATION:-10s}
@@ -20,17 +23,23 @@ run_k6() {
     echo "=================================================="
     
     # Run k6 with volume mount for reports and enable summary export
-    # We use MSYS_NO_PATHCONV=1 to prevent Git Bash from converting paths
+    # MSYS_NO_PATHCONV=1 prevents Git Bash from messing up Docker volume paths like /c/Users/...
     export MSYS_NO_PATHCONV=1
     
-    docker run --rm -i --network host -v "$(pwd)/reports:/reports" grafana/k6 run \
+    # Use pwd -W to get Windows style path for volume mount if needed, 
+    # but normally MSYS_NO_PATHCONV=1 with $(pwd) works or we use absolute windows path.
+    # We use the SCRIPT_DIR/reports to store reports.
+    
+    mkdir -p "$SCRIPT_DIR/reports"
+    
+    docker run --rm -i --network host -v "$SCRIPT_DIR/reports:/reports" grafana/k6 run \
         --summary-export "/reports/$JSON_FILENAME" \
         -e PORT=$PORT \
         -e VUS=$VUS \
         -e DURATION=$DURATION \
         -e TARGET_VUS=$VUS \
         -e FANOUT=$FANOUT \
-        - < script.js
+        - < "$SCRIPT_DIR/script.js"
         
     echo "✅ Test finished for $APP_NAME"
     echo "💾 JSON Report saved: reports/$JSON_FILENAME"
@@ -38,8 +47,6 @@ run_k6() {
 }
 
 # Create reports directory
-cd "$(dirname "$0")"
-mkdir -p reports
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 # Check argument
@@ -78,24 +85,35 @@ case "$TARGET" in
         echo "   Duration: 15s"
         echo "=================================================="
         
+        # Prevent Git Bash path conversion issues for Docker
         export MSYS_NO_PATHCONV=1
         
+        mkdir -p "$SCRIPT_DIR/reports"
+        
         # Default HOSTNAME to host.docker.internal for Windows compatibility
-        # Users can override it: HOSTNAME=localhost ./run-test.sh compare
-        TARGET_HOST=${HOSTNAME:-host.docker.internal}
+        # We ignore system HOSTNAME and prefer host.docker.internal for Docker Desktop
+        TARGET_HOST=${TARGET_HOST:-host.docker.internal}
 
         echo "👉 Running Blocking Test (MVC)..."
-        docker run --rm -i --network host -v "$(pwd)/reports:/reports" grafana/k6 run \
+        docker run --rm -i -v "$SCRIPT_DIR/reports:/reports" grafana/k6 run \
+            --summary-export "/reports/report_mvc_${TIMESTAMP}.json" \
             -e TARGET_ENV=blocking \
             -e HOSTNAME=$TARGET_HOST \
-            - < script-comparison.js
+            - < "$SCRIPT_DIR/script-comparison.js"
             
+        echo "✅ Blocking test done."
         echo ""
+        sleep 5
+        
         echo "👉 Running Non-Blocking Test (WebFlux)..."
-        docker run --rm -i --network host -v "$(pwd)/reports:/reports" grafana/k6 run \
+        docker run --rm -i -v "$SCRIPT_DIR/reports:/reports" grafana/k6 run \
+            --summary-export "/reports/report_webflux_${TIMESTAMP}.json" \
             -e TARGET_ENV=non-blocking \
             -e HOSTNAME=$TARGET_HOST \
-            - < script-comparison.js
+            - < "$SCRIPT_DIR/script-comparison.js"
+        
+        echo "✅ Non-Blocking test done."
+        echo "🎉 All comparison tests finished!"
         ;;
     *)
         echo "Unknown target: $TARGET"

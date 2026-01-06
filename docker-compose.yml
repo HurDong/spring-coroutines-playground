@@ -12,6 +12,7 @@ services:
     environment:
       - SERVER_PORT=8081
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/playground
+      - TOMCAT_THREADS_MAX=${TOMCAT_THREADS_MAX:-500}
     networks:
       - playground-net
     depends_on:

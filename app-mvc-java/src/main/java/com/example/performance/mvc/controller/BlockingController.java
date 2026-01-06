@@ -38,4 +38,24 @@ public class BlockingController {
         log.info("⏹️ [End]   Blocking Simulation Request on Thread: {}", Thread.currentThread().getName());
         return "Blocking Simulation Response (1s delay)";
     }
+
+    @GetMapping("/simulate-cpu")
+    public String simulateCpu() {
+        log.info("🔥 [Start] CPU Blocking Request on Thread: {}", Thread.currentThread().getName());
+        long start = System.currentTimeMillis();
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+            // 500,000 hashes to burn comparable CPU to a small request
+            for (int i = 0; i < 500000; i++) {
+                md.update("cpu-bound-work".getBytes());
+                md.digest();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        long duration = System.currentTimeMillis() - start;
+        log.info("🔥 [End]   CPU Blocking Request finished in {}ms on Thread: {}", duration,
+                Thread.currentThread().getName());
+        return "CPU Blocking Response (Duration: " + duration + "ms)";
+    }
 }

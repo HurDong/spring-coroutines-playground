@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -37,5 +38,26 @@ public class ReactiveController {
                 .doOnNext(l -> log.info("⏹️ [End]   Simulation Finished on Thread:  {}",
                         Thread.currentThread().getName()))
                 .map(l -> "Non-blocking Simulation Response (1s delay)");
+    }
+
+    @GetMapping("/simulate-cpu")
+    public Mono<String> simulateCpu() {
+        return Mono.fromCallable(() -> {
+            log.info("🔥 [Start] CPU Request (Offloaded) on Thread: {}", Thread.currentThread().getName());
+            long start = System.currentTimeMillis();
+            try {
+                java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+                for (int i = 0; i < 500000; i++) {
+                    md.update("cpu-bound-work".getBytes());
+                    md.digest();
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            long duration = System.currentTimeMillis() - start;
+            log.info("🔥 [End]   CPU Request finished in {}ms on Thread: {}", duration,
+                    Thread.currentThread().getName());
+            return "CPU Non-Blocking Response (Duration: " + duration + "ms)";
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 }

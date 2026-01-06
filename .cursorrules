@@ -1,5 +1,6 @@
 # Cursor Rules (Always Apply)
 
 ## Project Rules
+- **Language**: All explanations MUST be in Korean. See `.cursor/rules/korean-language.mdc`.
 - **Git Conventions**: Before making any git commits, YOU MUST READ AND FOLLOW `.cursor/rules/git_convention.mdc`.
 - **Reference**: Always check `.cursor/rules/` for specific conventions.

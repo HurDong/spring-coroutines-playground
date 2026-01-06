@@ -26,4 +26,16 @@ public class BlockingController {
         log.info("⏹️ [End]   Blocking DB Request on Thread: {}", Thread.currentThread().getName());
         return "Blocking Response (1s delay)";
     }
+
+    @GetMapping("/simulate-delay")
+    public String simulateDelay() {
+        log.info("▶️ [Start] Blocking Simulation Request on Thread: {}", Thread.currentThread().getName());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("⏹️ [End]   Blocking Simulation Request on Thread: {}", Thread.currentThread().getName());
+        return "Blocking Simulation Response (1s delay)";
+    }
 }

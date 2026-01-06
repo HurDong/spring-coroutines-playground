@@ -29,4 +29,13 @@ public class ReactiveController {
                 .map(count -> "Non-blocking Response (1s delay)")
                 .defaultIfEmpty("Non-blocking Response (1s delay)");
     }
+
+    @GetMapping("/simulate-delay")
+    public Mono<String> simulateDelay() {
+        log.info("▶️ [Start] Non-Blocking Simulation Request on Thread: {}", Thread.currentThread().getName());
+        return Mono.delay(java.time.Duration.ofMillis(1000))
+                .doOnNext(l -> log.info("⏹️ [End]   Simulation Finished on Thread:  {}",
+                        Thread.currentThread().getName()))
+                .map(l -> "Non-blocking Simulation Response (1s delay)");
+    }
 }

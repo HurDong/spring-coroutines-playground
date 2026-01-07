@@ -2,6 +2,11 @@
 
 이 프로젝트는 **Blocking I/O (Spring MVC)** 와 **Non-blocking I/O (Spring WebFlux + Kotlin Coroutines)** 의 성능 및 아키텍처 차이를 직접 비교 실험하기 위해 만들어졌습니다.
 
+
+## 📊 상세 성능 보고서 (Detailed Report)
+
+상세한 벤치마크 결과, 그래프 분석, 그리고 각 실험에 대한 기술적 인사이트는 **[PERFORMANCE_REPORT.md](./PERFORMANCE_REPORT.md)** 문서에서 확인하실 수 있습니다.
+
 ## 🏗️ 내부 구조 (Internal Architecture)
 
 외부 API 서버를 따로 띄우지 않고, **하나의 앱 안에서 모의(Simulation)** 하기 위해 2개의 컨트롤러를 만들었습니다.

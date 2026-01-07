@@ -58,4 +58,16 @@ public class BlockingController {
                 Thread.currentThread().getName());
         return "CPU Blocking Response (Duration: " + duration + "ms)";
     }
+
+    @GetMapping("/faulty-service")
+    public String faultyService() throws InterruptedException {
+        // 5 seconds delay to simulate a broken downstream service
+        Thread.sleep(5000);
+        return "Faulty Service Response";
+    }
+
+    @GetMapping("/health")
+    public String health() {
+        return "OK";
+    }
 }

@@ -60,4 +60,16 @@ public class ReactiveController {
             return "CPU Non-Blocking Response (Duration: " + duration + "ms)";
         }).subscribeOn(Schedulers.boundedElastic());
     }
+
+    @GetMapping("/faulty-service")
+    public Mono<String> faultyService() {
+        // 5 seconds delay (Non-blocking)
+        return Mono.delay(java.time.Duration.ofSeconds(5))
+                .map(i -> "Faulty Service Response");
+    }
+
+    @GetMapping("/health")
+    public Mono<String> health() {
+        return Mono.just("OK");
+    }
 }

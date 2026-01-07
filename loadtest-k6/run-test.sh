@@ -181,6 +181,39 @@ case "$TARGET" in
             
         echo "✅ DB Bottleneck test finished!"
         ;;
+    isolation)
+        # Usage: ./run-test.sh isolation [target_app]
+        APP=${2:-mvc}
+        
+        if [ "$APP" == "mvc" ]; then
+            PORT=8081
+            NAME="MVC"
+        elif [ "$APP" == "webflux" ]; then
+            PORT=8082
+            NAME="WebFlux"
+        else
+            echo "Unknown app: $APP (use mvc or webflux)"
+            exit 1
+        fi
+
+        echo "=================================================="
+        echo "🛡️ Starting Fault Isolation Test for $NAME"
+        echo "   Port: $PORT"
+        echo "=================================================="
+        
+        export MSYS_NO_PATHCONV=1
+        TARGET_HOST=${TARGET_HOST:-host.docker.internal}
+        
+        mkdir -p "$SCRIPT_DIR/reports"
+
+        docker run --rm -i -v "$SCRIPT_DIR/reports:/reports" grafana/k6 run \
+            --summary-export "/reports/report_isolation_${APP}_${TIMESTAMP}.json" \
+            -e PORT=$PORT \
+            -e HOSTNAME=$TARGET_HOST \
+            - < "$SCRIPT_DIR/script-isolation.js"
+            
+        echo "✅ Isolation test for $NAME finished!"
+        ;;
     *)
         echo "Unknown target: $TARGET"
         echo "Available targets: mvc, java, kotlin, all, compare"

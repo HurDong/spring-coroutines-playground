@@ -1,14 +1,15 @@
 # Spring Boot Coroutines Playground
 
-This repository contains experiments comparing the performance and architecture of Spring Boot MVC (Blocking) and WebFlux + Coroutines (Non-Blocking).
+이 저장소는 Spring Boot MVC (Blocking)와 WebFlux + Coroutines (Non-Blocking)의 성능 및 아키텍처 차이를 비교 실험한 프로젝트입니다.
 
-## 📊 Performance Report
-Detailed benchmarks and analysis are available in the [PERFORMANCE_REPORT.md](./PERFORMANCE_REPORT.md).
+## 📊 성능 보고서
+상세한 벤치마크 결과와 분석 내용은 [PERFORMANCE_REPORT.md](./PERFORMANCE_REPORT.md)에서 확인하실 수 있습니다.
 
-## Experiments
-- **Experiment 1 (I/O Bound)**: Thread Pool Saturation vs Event Loop efficiency.
-- **Experiment 2 (Mixed Workload)**: Impact of CPU-bound tasks on I/O throughput.
-- **Experiment 3 (DB Bottleneck)**: The ineffectiveness of thread scaling under connection pool limits.
+## 주요 실험 내용
+- **실험 1 (I/O Bound)**: 쓰레드 풀 고갈(Saturation) vs 이벤트 루프의 효율성 비교
+- **실험 2 (Mixed Workload)**: CPU 작업이 섞여 있을 때 I/O 처리량이 어떻게 무너지는가?
+- **실험 3 (DB Bottleneck)**: DB 커넥션이 부족할 때 쓰레드를 늘리는 것이 의미가 있는가?
+- **실험 4 (Resilience)**: 장애 격리(Fault Isolation) - 느린 API 하나가 전체 서버를 죽이는가?
 
-## Getting Started
-(Instructions to run the app...)
+## 시작하기
+(애플리케이션 실행 방법...)
